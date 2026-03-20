@@ -7,6 +7,9 @@ import {
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/navbar";
+import { Toaster } from "sonner";
+import { Providers } from "./providers";
+import { ScrollIndicator } from "@/components/scroll-indicator";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -36,17 +39,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-mono", jetbrainsMono.variable)}>
       <body
-        className={`${plusJakartaSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen`}
+        className={`${plusJakartaSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         <Navbar />
         {/* Floating Scroll Indicator (Left Side) */}
-        <div className="fixed left-4 top-1/2 -translate-y-1/2 -rotate-90 text-xs font-medium tracking-widest hidden lg:block z-50">
-          <span className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-brand-navy animate-pulse" />
-            Scroll
-          </span>
-        </div>
-        <main>{children}</main>
+        <ScrollIndicator />
+        <main className="min-h-screen">
+          <Providers>{children}</Providers>
+        </main>
+        <Toaster />
       </body>
     </html>
   );

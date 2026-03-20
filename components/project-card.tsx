@@ -43,7 +43,7 @@ export default function ProjectCard({
       {/* The Overlapping Info Card */}
       <motion.div
         whileHover={{ y: -5 }}
-        className={`bg-white rounded-3xl p-8 shadow-xl w-11/12 md:w-1/2 md:absolute top-1/2 md:-translate-y-1/2 z-10 mt-[-40px] md:mt-0 ${
+        className={`bg-white p-8 shadow-xl w-11/12 md:w-1/2 md:absolute top-1/2 md:-translate-y-1/2 z-10 mt-[-40px] md:mt-0 ${
           alignText === "right" ? "md:-right-12" : "md:-left-12"
         }`}
       >

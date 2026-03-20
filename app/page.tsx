@@ -3,7 +3,7 @@ import HeroTitle from "@/components/hero-title";
 export default function Home() {
   return (
     <>
-      <section className="bg-brand-pink min-h-screen">
+      <section className="bg-background">
         <HeroTitle />
       </section>
 
@@ -27,7 +27,7 @@ export default function Home() {
       </section> */}
 
       <section className="bg-brand-pink py-32 text-center">
-        {/* Footer CTA */}
+        more to come...
       </section>
     </>
   );
