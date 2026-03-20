@@ -1,6 +1,9 @@
 /**
  * Extracts the file ID from a standard Google Drive share link.
  * Handles formats like /file/d/ID/view or ?id=ID
+ *
+ * @param {string} url - The Google Drive share link.
+ * @returns {string | null} The extracted file ID, or null if invalid/unsupported.
  */
 export function extractDriveFileId(url: string): string | null {
   try {
@@ -19,7 +22,7 @@ export function extractDriveFileId(url: string): string | null {
     }
 
     return null;
-  } catch (error) {
+  } catch {
     // Invalid URL format
     return null;
   }
@@ -27,6 +30,9 @@ export function extractDriveFileId(url: string): string | null {
 
 /**
  * Converts a standard Google Drive share link into a direct view/hosting link.
+ *
+ * @param {string} url - The Google Drive share link.
+ * @returns {string | null} The formatted direct hosting link, or null if the input was invalid.
  */
 export function generateDirectDriveLink(url: string): string | null {
   const fileId = extractDriveFileId(url);

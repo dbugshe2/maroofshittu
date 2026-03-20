@@ -2,6 +2,15 @@
 import { motion } from "framer-motion";
 import DriveConverterUI from "@/packages/drive-link-converter/drive-converter-ui";
 
+/**
+ * ShowcasePage Component
+ *
+ * The layout for presenting a gallery of "mini-apps" or specific feature demonstrations.
+ * Currently serves as a playground environment for decoupled tools like the 
+ * DriveConverterUI.
+ *
+ * @returns {JSX.Element} The showcase page component.
+ */
 export default function ShowcasePage() {
   return (
     <div className="min-h-screen bg-brand-blue pt-32 pb-20 px-4">

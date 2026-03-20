@@ -1,9 +1,17 @@
 import HeroTitle from "@/components/hero-title";
 
+/**
+ * Home Component
+ *
+ * The landing page for the application. It acts as an entry point, featuring 
+ * the primary hero section and directing users to various other sections.
+ *
+ * @returns {JSX.Element} The rendered homepage component.
+ */
 export default function Home() {
   return (
     <>
-      <section className="bg-brand-pink min-h-screen">
+      <section className="bg-background">
         <HeroTitle />
       </section>
 
@@ -27,7 +35,7 @@ export default function Home() {
       </section> */}
 
       <section className="bg-brand-pink py-32 text-center">
-        {/* Footer CTA */}
+        more to come...
       </section>
     </>
   );

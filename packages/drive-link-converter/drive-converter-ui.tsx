@@ -7,6 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Copy, Check, Link as LinkIcon, AlertCircle } from "lucide-react";
 import { generateDirectDriveLink } from "./index"; // Importing the pure logic
 
+/**
+ * DriveConverterUI Component
+ *
+ * A user interface component that allows users to paste a Google Drive 
+ * share link and converts it into a direct image hosting URL.
+ * It provides error handling for invalid links and a one-click copy feature.
+ *
+ * @returns {JSX.Element} The rendered converter user interface.
+ */
 export default function DriveConverterUI() {
   const [inputUrl, setInputUrl] = useState("");
   const [outputUrl, setOutputUrl] = useState<string | null>(null);

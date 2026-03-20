@@ -3,13 +3,35 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
+/**
+ * Props for the ProjectCard component.
+ */
 interface ProjectCardProps {
+  /** The title of the project to display. */
   title: string;
+  /** The source URL or path for the project's preview image. */
   imageSrc: string;
+  /** The URL slug used to link to the detailed project page. */
   slug: string;
+  /**
+   * Determines the alignment of the text card relative to the image.
+   * "right" overlays the text card on the right side of the image.
+   * "left" overlays the text card on the left side.
+   * Defaults to "right".
+   */
   alignText?: "left" | "right";
 }
 
+/**
+ * ProjectCard Component
+ *
+ * Displays a visually appealing project preview card. It consists of an image and
+ * an overlapping text card with a title, description, and link to the project.
+ * Uses Framer Motion for scroll reveal and hover animations.
+ *
+ * @param {ProjectCardProps} props - The properties for configuring the project card.
+ * @returns {JSX.Element} The animated project card component.
+ */
 export default function ProjectCard({
   title,
   imageSrc,
@@ -43,7 +65,7 @@ export default function ProjectCard({
       {/* The Overlapping Info Card */}
       <motion.div
         whileHover={{ y: -5 }}
-        className={`bg-white rounded-3xl p-8 shadow-xl w-11/12 md:w-1/2 md:absolute top-1/2 md:-translate-y-1/2 z-10 mt-[-40px] md:mt-0 ${
+        className={`bg-white p-8 shadow-xl w-11/12 md:w-1/2 md:absolute top-1/2 md:-translate-y-1/2 z-10 mt-[-40px] md:mt-0 ${
           alignText === "right" ? "md:-right-12" : "md:-left-12"
         }`}
       >

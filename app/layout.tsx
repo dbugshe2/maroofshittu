@@ -7,6 +7,11 @@ import {
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/navbar";
+import { Toaster } from "sonner";
+import { Providers } from "./providers";
+import { ScrollIndicator } from "@/components/scroll-indicator";
+import { Analytics } from "@vercel/analytics/next";
+import Head from "next/head";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -24,10 +29,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Maroof Shittu | Reclusive Sloth",
-  description: "Maroof Shittu's personal website",
+  title: "Maroof Shittu | Software Engineer",
+  description:
+    "Maroof Shittu's personal website, Maroof is a reclusive sloth who builds cool stuff",
 };
 
+/**
+ * RootLayout Component
+ *
+ * The foundational layout wrapper for the entire Next.js application.
+ * It configures global fonts, sets up the HTML structure, injects global styles,
+ * and wraps all nested pages with common UI elements like the navbar,
+ * scroll indicator, and necessary context providers.
+ *
+ * @param {Object} props - The component properties.
+ * @param {React.ReactNode} props.children - The nested active page routes to be rendered.
+ * @returns {JSX.Element} The global HTML document layout.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -35,18 +53,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("font-mono", jetbrainsMono.variable)}>
+      <Head>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+      </Head>
       <body
-        className={`${plusJakartaSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen`}
+        className={`${plusJakartaSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         <Navbar />
         {/* Floating Scroll Indicator (Left Side) */}
-        <div className="fixed left-4 top-1/2 -translate-y-1/2 -rotate-90 text-xs font-medium tracking-widest hidden lg:block z-50">
-          <span className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-brand-navy animate-pulse" />
-            Scroll
-          </span>
-        </div>
-        <main>{children}</main>
+        <ScrollIndicator />
+        <main className="min-h-screen">
+          <Providers>{children}</Providers>
+        </main>
+        <Toaster />
+        <Analytics />
       </body>
     </html>
   );
