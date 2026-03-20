@@ -10,6 +10,7 @@ import { Navbar } from "@/components/navbar";
 import { Toaster } from "sonner";
 import { Providers } from "./providers";
 import { ScrollIndicator } from "@/components/scroll-indicator";
+import { Analytics } from "@vercel/analytics/next";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -27,8 +28,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Maroof Shittu | Reclusive Sloth",
-  description: "Maroof Shittu's personal website",
+  title: "Maroof Shittu | Software Engineer",
+  description:
+    "Maroof Shittu's personal website, Maroof is a reclusive sloth who builds cool stuff",
 };
 
 export default function RootLayout({
@@ -48,6 +50,7 @@ export default function RootLayout({
           <Providers>{children}</Providers>
         </main>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );

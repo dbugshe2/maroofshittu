@@ -33,11 +33,13 @@ export default function ContactPage() {
             Just drop a line, I&apos;ll get back to you as soon as possible
           </p>
         </div>
-        <h3 className="text-4xl text-center font-semibold italic">
+        <h2 className="text-4xl text-center font-semibold italic">
           Shoot me an email
           <br />
-          <span className="underline">👉🏾 hi@maroofshittu.com</span>{" "}
-        </h3>
+          <a href="mailto:hi@maroofshittu.com" className="underline">
+            👉🏾 hi@maroofshittu.com
+          </a>
+        </h2>
 
         {/* <form className="space-y-8 animate__animated animate__fadeInUp">
           <div className="space-y-2">
