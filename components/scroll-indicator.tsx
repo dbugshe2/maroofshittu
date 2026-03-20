@@ -3,6 +3,15 @@
 import { useEffect, useState } from "react";
 import { Slider } from "@/components/ui/slider";
 
+/**
+ * ScrollIndicator Component
+ *
+ * A sticky vertical slider displayed on large screens that indicates the current 
+ * scroll progress of the page. It allows the user to see how far they have scrolled 
+ * and optionally control the scroll position by interacting with the slider.
+ *
+ * @returns {JSX.Element} The vertical scroll indicator component.
+ */
 export function ScrollIndicator() {
   const [progress, setProgress] = useState(0);
 

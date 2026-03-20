@@ -37,9 +37,9 @@
   --sidebar-border: oklch(0 0 0);
   --sidebar-ring: oklch(0.41 0.07 129.47);
 
-  --font-sans: Plus Jakarta Sans, sans-serif;
-  --font-serif: Geist, Geist Fallback, sans-serif;
-  --font-mono: Geist Mono, Geist Mono Fallback, monospace;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-serif: "Geist", "Geist Fallback", sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
 
   --radius: 0rem;
 

@@ -3,13 +3,35 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
+/**
+ * Props for the ProjectCard component.
+ */
 interface ProjectCardProps {
+  /** The title of the project to display. */
   title: string;
+  /** The source URL or path for the project's preview image. */
   imageSrc: string;
+  /** The URL slug used to link to the detailed project page. */
   slug: string;
+  /**
+   * Determines the alignment of the text card relative to the image.
+   * "right" overlays the text card on the right side of the image.
+   * "left" overlays the text card on the left side.
+   * Defaults to "right".
+   */
   alignText?: "left" | "right";
 }
 
+/**
+ * ProjectCard Component
+ *
+ * Displays a visually appealing project preview card. It consists of an image and
+ * an overlapping text card with a title, description, and link to the project.
+ * Uses Framer Motion for scroll reveal and hover animations.
+ *
+ * @param {ProjectCardProps} props - The properties for configuring the project card.
+ * @returns {JSX.Element} The animated project card component.
+ */
 export default function ProjectCard({
   title,
   imageSrc,

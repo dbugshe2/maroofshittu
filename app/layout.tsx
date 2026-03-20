@@ -11,6 +11,7 @@ import { Toaster } from "sonner";
 import { Providers } from "./providers";
 import { ScrollIndicator } from "@/components/scroll-indicator";
 import { Analytics } from "@vercel/analytics/next";
+import Head from "next/head";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -33,6 +34,18 @@ export const metadata: Metadata = {
     "Maroof Shittu's personal website, Maroof is a reclusive sloth who builds cool stuff",
 };
 
+/**
+ * RootLayout Component
+ *
+ * The foundational layout wrapper for the entire Next.js application.
+ * It configures global fonts, sets up the HTML structure, injects global styles,
+ * and wraps all nested pages with common UI elements like the navbar,
+ * scroll indicator, and necessary context providers.
+ *
+ * @param {Object} props - The component properties.
+ * @param {React.ReactNode} props.children - The nested active page routes to be rendered.
+ * @returns {JSX.Element} The global HTML document layout.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,6 +53,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("font-mono", jetbrainsMono.variable)}>
+      <Head>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+      </Head>
       <body
         className={`${plusJakartaSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >

@@ -1,5 +1,13 @@
 import HeroTitle from "@/components/hero-title";
 
+/**
+ * Home Component
+ *
+ * The landing page for the application. It acts as an entry point, featuring 
+ * the primary hero section and directing users to various other sections.
+ *
+ * @returns {JSX.Element} The rendered homepage component.
+ */
 export default function Home() {
   return (
     <>

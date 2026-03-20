@@ -7,6 +7,14 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+/**
+ * Navbar Component
+ *
+ * A fixed navigation bar containing the site's logo and primary navigation links.
+ * It remains fixed at the top of the viewport and features a blurred background effect.
+ *
+ * @returns {JSX.Element} The rendered navigation bar component.
+ */
 export function Navbar() {
   return (
     <>

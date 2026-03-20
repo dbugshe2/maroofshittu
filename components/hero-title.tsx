@@ -1,6 +1,15 @@
 "use client";
 import { motion } from "motion/react";
 
+/**
+ * HeroTitle Component
+ *
+ * Displays the main hero section of the landing page, introducing the user
+ * with animated text using Framer Motion. It features a responsive layout
+ * and a continuously rotating SVG icon.
+ *
+ * @returns {JSX.Element} The hero section component.
+ */
 export default function HeroTitle() {
   return (
     <section className="h-screen items-center px-4 flex flex-col flex-1 justify-center">

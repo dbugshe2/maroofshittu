@@ -5,6 +5,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
+/**
+ * ContactPage Component
+ *
+ * Renders the "Contact" route showcasing an email and a friendly message 
+ * to encourage users to reach out. It utilizes Framer Motion for entering 
+ * animations into the view.
+ *
+ * @returns {JSX.Element} The visual contact page layout.
+ */
 export default function ContactPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
