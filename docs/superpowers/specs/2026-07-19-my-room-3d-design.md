@@ -134,7 +134,9 @@ components/room/
     use-webgl-support.ts
     use-quality-tier.ts
   lib/
-    curve.ts                         # spline helpers (build path, sample by offset, ease)
+    curve.ts                         # spline sampling, control-point arc offsets, nearest-station
+    tour.ts                          # cached tour: curve + introEnd + station entries
+    scroll-lock.ts                   # lock/restore a scroll container (modal freeze)
     dispose.ts                       # gltf/material disposal helpers
 
 scripts/fetch-room-assets.mjs        # downloads Poly Pizza GLBs + writes assets.ts + CREDITS.md
@@ -165,10 +167,10 @@ interface RoomState {
   setPhase(p): void;
   setQuality(q): void;
   toggleLighting(): void;
-  setScrollOffset(o): void;
-  requestJumpTo(id: StationId): void;   // sets requestedOffset from station offset
+  setScrollOffset(o: number): void;
+  requestJumpTo(offset: number): void;  // numeric tour offset (0..1) to scroll to
   clearRequestedOffset(): void;
-  setActiveStation(id): void;
+  setActiveStation(id: StationId | null): void; // null = no station in range
   openObjectPanel(id: ObjectId): void;  // also marks visited
   closeObjectPanel(): void;
 }
@@ -292,6 +294,11 @@ followed by each station's `cameraPos` in tour order; derived station offsets
   offset; drives highlight emphasis + HUD state.
 - Section-nav jump: `requestJumpTo(offset)` → `ScrollBridge` scrolls the
   scroll element to `offset * scrollHeight`.
+- **Scroll lock while a modal is open:** when `openObject` is set, the
+  ScrollControls scroll element is locked (`overflow: hidden` via
+  `lib/scroll-lock.ts`, applied by `ScrollBridge`) so wheel, touch, and
+  keyboard input cannot advance the hidden tour; closing the modal restores
+  the previous overflow and the tour resumes exactly where it froze.
 - `prefers-reduced-motion`: reduce look-sway and damping; still scroll-linked.
 - Mobile: native touch scroll drives the same flight; panels become bottom
   sheets.
@@ -425,6 +432,8 @@ Add Vitest + RTL (no test setup exists yet). Focus on logic/wiring, not pixels:
 - **curve/tour**: sampling at offset 0 / 1 returns path endpoints; derived
   station offsets strictly ascending and after `introEnd`; `nearestStation`
   thresholding.
+- **scroll-lock**: locking sets `overflow: hidden`; restoring returns the
+  element's prior overflow value.
 - Optional **scene smoke** via `@react-three/test-renderer`: scene mounts and
   contains expected interactive object count.
 - Gate: `npm run build` (typecheck) + `npm run lint` pass; manual visual QA in
