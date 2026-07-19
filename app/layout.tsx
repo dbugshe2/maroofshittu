@@ -6,10 +6,9 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { Navbar } from "@/components/navbar";
+import { ChromeGate } from "@/components/chrome-gate";
 import { Toaster } from "sonner";
 import { Providers } from "./providers";
-import { ScrollIndicator } from "@/components/scroll-indicator";
 import { Analytics } from "@vercel/analytics/next";
 import Head from "next/head";
 
@@ -60,9 +59,7 @@ export default function RootLayout({
       <body
         className={`${plusJakartaSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        <Navbar />
-        {/* Floating Scroll Indicator (Left Side) */}
-        <ScrollIndicator />
+        <ChromeGate />
         <main className="min-h-screen">
           <Providers>{children}</Providers>
         </main>
