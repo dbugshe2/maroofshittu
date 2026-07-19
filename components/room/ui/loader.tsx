@@ -4,7 +4,8 @@ import { useProgress } from "@react-three/drei";
 /** Branded Suspense loader shown while GLBs stream in. */
 export function RoomLoader() {
   const { progress, active } = useProgress();
-  if (!active && progress >= 100) return null;
+  const show = active || (progress > 0 && progress < 100);
+  if (!show) return null;
   return (
     <div className="fixed inset-0 z-20 grid place-items-center bg-background">
       <div className="w-64 border-2 border-border bg-card p-6 shadow-[4px_4px_0px_0px_var(--border)]">
