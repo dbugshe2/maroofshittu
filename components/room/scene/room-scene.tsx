@@ -1,23 +1,25 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
+import { ContactShadows } from "@react-three/drei";
+import { useRoomStore } from "@/components/room/state/room-store";
+import { RoomShell } from "./room-shell";
+import { Lighting } from "./lighting";
 
-/** Minimal scene; lighting/models/camera added in Tasks 10–13. */
 export default function RoomScene() {
+  const quality = useRoomStore((s) => s.quality);
   return (
     <Canvas
-      shadows
-      dpr={[1, 2]}
+      shadows={quality === "high"}
+      dpr={quality === "low" ? [1, 1.25] : [1, 2]}
       camera={{ position: [0, 1.6, 5], fov: 55 }}
       className="!fixed inset-0"
     >
+      <color attach="background" args={["#1b1726"]} />
       <Suspense fallback={null}>
-        <ambientLight intensity={0.8} />
-        <directionalLight position={[5, 8, 5]} intensity={1.2} />
-        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <planeGeometry args={[10, 10]} />
-          <meshStandardMaterial color="#d9cbb0" />
-        </mesh>
+        <Lighting quality={quality} />
+        <RoomShell />
+        <ContactShadows position={[0, 0.01, 0]} opacity={0.4} scale={12} blur={2} far={4} />
       </Suspense>
     </Canvas>
   );
