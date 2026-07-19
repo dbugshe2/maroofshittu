@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { ContactShadows, ScrollControls } from "@react-three/drei";
 import { useRoomStore } from "@/components/room/state/room-store";
 import { RoomShell } from "./room-shell";
+import { RoomModels } from "./room-models";
 import { Lighting } from "./lighting";
 import { CameraRig, ScrollBridge } from "./camera-rig";
 
@@ -21,6 +22,7 @@ export default function RoomScene() {
         <ScrollControls pages={5} damping={0.25}>
           <Lighting quality={quality} />
           <RoomShell />
+          <RoomModels />
           <ContactShadows position={[0, 0.01, 0]} opacity={0.4} scale={12} blur={2} far={4} />
           <CameraRig />
           <ScrollBridge />
