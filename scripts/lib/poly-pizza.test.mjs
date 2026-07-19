@@ -41,6 +41,23 @@ describe("poly-pizza helpers", () => {
     expect(extractModelInfo(html).name).toBe("Laptop / MacBook Pro");
   });
 
+  // Regression: on every real model page fetched for this task (Door, Laptop, Mug,
+  // Skateboard, Book Stack, Bookcase with Books, ...), __SERVER_APP_STATE__ has exactly
+  // one "Title" — the primary model's, under "model":{"Title":...} — because the
+  // "suggested" array (the site's related-models slot, and the only other place a
+  // "Title" could plausibly appear) was always server-rendered as [null,null,null,null],
+  // never populated. But the old regex (`html.match(/"Title":.../)`) was an unanchored
+  // first-match over the *entire page*, with nothing tying it to the "model" object
+  // specifically — it only happened to work because "model" always came first in the
+  // bytes. This fixture places a related model's "Title" earlier in the string than the
+  // primary model's (as poly.pizza's own "suggested" slot would if it were ever
+  // server-rendered, or as any other future "Title"-shaped content earlier on the page
+  // would) and asserts the *primary* model's title is still the one extracted.
+  it("extracts the primary model's title, not an earlier related model's", () => {
+    const html = `window.__SERVER_APP_STATE__ = {"initialData":{"related":[{"Title":"Related Chair"}],"model":{"Title":"Real Desk"},"suggested":[null,null,null,null]}};`;
+    expect(extractModelInfo(html).name).toBe("Real Desk");
+  });
+
   it("extracts the author from model html", () => {
     const html = `<meta property="og:title" content="Bed Double" />
       <a href="/u/Quaternius" class="author">Quaternius</a>`;
