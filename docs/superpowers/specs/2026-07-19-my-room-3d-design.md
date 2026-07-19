@@ -7,8 +7,9 @@
 ## 1. Goal
 
 Add a full-screen, explorable 3D room to the portfolio at `/room`. It is a cozy
-bedroom-with-workspace that visitors move through via a **scroll-driven,
-first-person fly-through**. Interactive "stations" (desk, bookcase, polaroid
+bedroom-with-workspace explored via a **scroll-driven first-person flight**: an
+overhead establishing view dives down into the room, then flies the camera up
+close to each section in turn. Interactive "stations" (desk, bookcase, polaroid
 wall, etc.) reveal aspects of Maroof — projects, story, interests, hobbies,
 current work, and contact. The scene is built from curated Poly Pizza low-poly
 GLTF models. The system is **data-driven** so new objects/content can be added
@@ -23,16 +24,20 @@ usable 2D fallback with no WebGL, is accessible, is license-compliant
 
 1. Visitor lands on `/room`. Site navbar/chrome is hidden; a branded loader
    shows asset progress.
-2. The room fades in, camera at the doorway in first person.
-3. Scrolling advances the camera along a fixed spline path through the room
-   (damped, cinematic). Scroll = distance along the tour; the camera's look
-   direction eases per segment.
-4. As the camera arrives at each **station**, that station's object highlights
-   and a themed panel eases in — the scroll narrates the room.
-5. Highlighted objects are also **clickable**: clicking opens a full detail
-   overlay (DOM), e.g. the computer "boots" a projects OS, a polaroid enlarges,
-   the whiteboard expands. The camera holds position on the rails while an
-   overlay is open. Closing returns to the flow.
+2. The room fades in on an **overhead establishing view** — the whole room seen
+   from high above, dollhouse-style.
+3. Scrolling **dives the camera down into the room**, then flies it FPV-style
+   along a keyframed spline that carries it **up close to each section** in
+   turn (damped, cinematic). Scroll = distance along the flight; the look
+   direction eases from straight-down overhead to level flight, then frames
+   each station's objects near-to.
+4. Arriving at a **station** highlights its interactive objects and shows their
+   floating labels — nothing else opens during flight; the tour stays
+   cinematic and uncluttered.
+5. Highlighted objects are **clickable**: clicking opens a full detail modal
+   (DOM), e.g. the computer "boots" a projects OS, a polaroid enlarges, the
+   whiteboard expands. The camera holds position on the rails while a modal is
+   open. Closing returns to the flow.
 6. A HUD shows a "N/M explored" discovery counter, a "jump to section" nav
    (Desk · Shelf · Wall · Corner), a day/night toggle mirror of the light
    switch, and an exit-to-site control.
@@ -43,7 +48,8 @@ usable 2D fallback with no WebGL, is accessible, is license-compliant
 
 ### In scope (v1)
 - `/room` route, full-screen canvas, chrome hidden on immersive routes.
-- Scroll-driven first-person camera on a spline; damped; per-segment look.
+- Scroll-driven camera flight: overhead intro dive + close-up station
+  keyframes on one spline; damped; eased look targets.
 - Room shell (procedural walls/floor/window) + 30 Poly Pizza furniture/prop
   GLBs placed to dress the room.
 - 8 interactive objects (6 content stations + 2 ambient interactions), listed
@@ -176,9 +182,10 @@ interface RoomState {
 
 ## 8. Interactive objects & stations
 
-Tour path order (spline): **door → bed/nightstand/phone → bookcase →
-polaroid wall → desk workstation → skateboard corner**, with the whiteboard
-framed along the way.
+Tour order: **overhead establishing view → dive toward the doorway →
+nightstand/phone → bookcase → polaroid wall → whiteboard → desk workstation →
+skateboard corner**. The spline threads through a close-up camera pose at
+every station.
 
 | id | Station? | Built from (models) | Panel / action | Reveals |
 |---|---|---|---|---|
@@ -241,34 +248,53 @@ interface InteractiveObject {
   action?: 'toggleLighting' | 'spin'; // non-panel interaction
 }
 
-interface Station { id: StationId; label: string; offset: number; lookAt: Vec3 }
+interface Station { id: StationId; label: string; cameraPos: Vec3; lookAt: Vec3 }
 
-export const pathPoints: Vec3[];        // CatmullRom control points
-export const stations: Station[];       // offsets (0..1) + look targets
+export const introPath: Vec3[];   // overhead establishing keyframes (dive-in)
+export const stations: Station[]; // ordered close-up camera poses + look targets
+export const tourPoints: Vec3[];  // spline control points = intro + station poses
 export const interactiveObjects: InteractiveObject[];
 export const ambientObjects: { models: AssetId[]; transform: ... }[];
 ```
 
 Invariants (test-enforced): object ids unique; every `station` referenced by an
 object exists in `stations`; every `panel` maps to a real panel component; every
-`AssetId` referenced exists in `assets.ts`; station `offset`s in `[0,1]`
-ascending.
+`AssetId` referenced exists in `assets.ts`; `tourPoints` is the intro keyframes
+followed by each station's `cameraPos` in tour order; derived station offsets
+(see §10) strictly ascending.
 
 ## 10. Navigation model (scroll-driven FPV)
 
+- **The tour is a keyframe flight.** Spline control points = `introPath` (an
+  overhead establishing view high above the room, then a dive toward the
+  doorway wall down to eye level) followed by each station's `cameraPos` in
+  tour order. A `THREE.CatmullRomCurve3` threads through all of them, so the
+  camera flies up close to every station, and a station's framing is tuned by
+  editing its `cameraPos`/`lookAt` alone.
+- **Station scroll offsets are derived, not hand-written**: each station's
+  offset is the arc-length fraction of the spline at its `cameraPos`
+  (nearest-sample search over an arc-length tessellation). `lib/tour.ts`
+  builds the curve once and exposes `{ curve, introEnd, stationEntries }`
+  where each entry carries `{ id, label, offset, cameraPos, lookAt }`.
 - `<ScrollControls pages={N} damping={...}>` wraps the scene. `N` sized so the
-  path has comfortable scroll length (tunable; ~ number of stations + margins).
-- `camera-rig.tsx` builds a `THREE.CatmullRomCurve3` from `pathPoints`. Each
-  frame it reads `scroll.offset`, applies an easing, samples
-  `curve.getPointAt(eased)` for position and a look target (blend of
-  `curve.getPointAt(eased + lookAhead)` and the nearest station `lookAt`), and
-  lerps the camera for smoothness.
-- `activeStation` = station whose `offset` is nearest the current eased offset
-  within a threshold; drives panel reveal + HUD highlight.
-- Section-nav jump: `requestJumpTo(stationId)` → `ScrollBridge` scrolls the
-  scroll element to `station.offset * scrollHeight`.
+  flight has comfortable scroll length (tunable; ~ stations + intro margin).
+- `camera-rig.tsx`: each frame reads `scroll.offset`, samples
+  `curve.getPointAt(offset)` for position, and lerps the camera for
+  smoothness (raw offset everywhere so station offsets stay aligned).
+- **Look direction:** during the intro (`offset < introEnd`) the camera gazes
+  at the room center, easing from straight-down overhead toward level as it
+  dives; after the dive it blends a spline look-ahead with the nearest
+  station's `lookAt`, so each arrival frames its objects close-up.
+- **Arrival UI:** reaching a station highlights its objects and shows their
+  floating labels. No content panel opens during flight — content is
+  click-only (modal overlay).
+- `activeStation` = nearest `stationEntry` within a threshold of the current
+  offset; drives highlight emphasis + HUD state.
+- Section-nav jump: `requestJumpTo(offset)` → `ScrollBridge` scrolls the
+  scroll element to `offset * scrollHeight`.
 - `prefers-reduced-motion`: reduce look-sway and damping; still scroll-linked.
-- Mobile: native touch scroll drives the same path; panels become bottom sheets.
+- Mobile: native touch scroll drives the same flight; panels become bottom
+  sheets.
 
 ## 11. Rendering, lighting, look & feel
 
@@ -387,7 +413,7 @@ Add Vitest + RTL (no test setup exists yet). Focus on logic/wiring, not pixels:
 
 - **Registry integrity** (`objects.ts`): unique ids; every `station` exists;
   every `panel` maps to a component; every `AssetId` exists in `assets.ts`;
-  station offsets in `[0,1]` ascending.
+  `tourPoints` threads intro keyframes then station poses in order.
 - **Content integrity**: required fields present; every gallery `src` resolves
   to a file in `/public`.
 - **`use-quality-tier`**: given mocked GPU/device signals → expected tier.
@@ -396,7 +422,9 @@ Add Vitest + RTL (no test setup exists yet). Focus on logic/wiring, not pixels:
   `projects-os` lists projects; `contact` shows email).
 - **HUD**: discovery counter reflects `visited`; section nav dispatches
   `requestJumpTo`.
-- **curve.ts**: sampling at offset 0 / 1 returns path endpoints; easing bounds.
+- **curve/tour**: sampling at offset 0 / 1 returns path endpoints; derived
+  station offsets strictly ascending and after `introEnd`; `nearestStation`
+  thresholding.
 - Optional **scene smoke** via `@react-three/test-renderer`: scene mounts and
   contains expected interactive object count.
 - Gate: `npm run build` (typecheck) + `npm run lint` pass; manual visual QA in
@@ -417,8 +445,10 @@ Add Vitest + RTL (no test setup exists yet). Focus on logic/wiring, not pixels:
 ## 18. Acceptance criteria
 
 - `/room` loads full-screen with chrome hidden; other routes unaffected.
-- Scrolling flies the first-person camera smoothly along the path; section-nav
-  jumps work; reduced-motion respected.
+- The tour opens on an overhead view and dives into the room; scrolling flies
+  the camera smoothly up close to each of the six stations; arrival shows
+  highlight + floating labels only (content opens on click); section-nav jumps
+  work; reduced-motion respected.
 - All 8 interactive objects hover-highlight and activate (6 open correct panels;
   light switch toggles day/night; fan spins). Discovery counter updates.
 - All 30 requested models load and are placed; CC-BY authors credited in
