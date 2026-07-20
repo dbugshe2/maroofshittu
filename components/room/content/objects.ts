@@ -121,7 +121,7 @@ export const interactiveObjects: InteractiveObject[] = [
   {
     id: "ceilingfan",
     label: "Ceiling fan",
-    models: ["ceiling-fan"],
+    models: [],
     transform: { position: { x: 0, y: 3.4, z: 0 } },
     hotspot: { x: 0, y: 3.1, z: 0 },
     action: "spin",
