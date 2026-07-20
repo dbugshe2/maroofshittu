@@ -5,6 +5,7 @@ import { useQualityTier } from "./hooks/use-quality-tier";
 import { useRoomStore } from "./state/room-store";
 import { Fallback2D } from "./ui/fallback-2d";
 import { RoomLoader } from "./ui/loader";
+import { RoomHud } from "./ui/room-hud";
 import RoomScene from "./scene/room-scene";
 
 export default function RoomExperience() {
@@ -27,7 +28,7 @@ export default function RoomExperience() {
     <div className="fixed inset-0 overflow-hidden bg-background">
       <RoomLoader />
       <RoomScene />
-      {/* HUD + overlays added in Tasks 14–15 */}
+      <RoomHud />
     </div>
   );
 }
