@@ -4,7 +4,7 @@ import {
   JetBrains_Mono,
   Plus_Jakarta_Sans,
 } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { cn } from "@/lib/utils";
 import { ChromeGate } from "@/components/chrome-gate";
 import { Toaster } from "sonner";
