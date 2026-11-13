@@ -81,15 +81,15 @@ export default function ProjectCard({
       {/* The Overlapping Info Card */}
       <motion.div
         whileHover={{ y: -5 }}
-        className={`relative bg-white p-8 shadow-xl w-11/12 md:w-1/2 md:absolute top-1/2 md:-translate-y-1/2 z-10 mt-[-40px] md:mt-0 ${
+        className={`relative bg-card p-8 shadow-xl w-11/12 md:w-1/2 md:absolute top-1/2 md:-translate-y-1/2 z-10 mt-[-40px] md:mt-0 ${
           alignText === "right" ? "md:-right-12" : "md:-left-12"
         }`}
       >
-        <span className="absolute top-6 right-8 text-sm font-semibold text-gray-300">
+        <span className="absolute top-6 right-8 text-sm font-semibold text-foreground/25">
           {String(index + 1).padStart(2, "0")}
         </span>
-        <h3 className="text-3xl font-bold mb-4 text-brand-navy">{title}</h3>
-        <p className="text-gray-500 mb-6 text-sm leading-relaxed">
+        <h3 className="text-3xl font-bold mb-4 text-foreground">{title}</h3>
+        <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
           {description}
         </p>
         {tags.length > 0 && (
@@ -97,7 +97,7 @@ export default function ProjectCard({
             {tags.map((tag) => (
               <li
                 key={tag}
-                className="text-xs font-medium text-brand-navy/60 border border-brand-navy/15 rounded-full px-3 py-1"
+                className="text-xs font-medium text-foreground/60 border border-foreground/15 rounded-full px-3 py-1"
               >
                 {tag}
               </li>
@@ -107,7 +107,7 @@ export default function ProjectCard({
         {href && (
           <Link
             href={href}
-            className="text-brand-navy font-semibold hover:text-brand-orange transition-colors flex items-center gap-2"
+            className="text-foreground font-semibold hover:text-primary transition-colors flex items-center gap-2"
           >
             Discover <span className="text-lg">↗</span>
           </Link>

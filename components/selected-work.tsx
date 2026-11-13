@@ -14,9 +14,9 @@ import { PROJECTS } from "@/lib/projects";
  */
 export function SelectedWork() {
   return (
-    <section id="work" className="bg-brand-blue py-32 px-4 rounded-t-[3rem]">
+    <section id="work" className="bg-secondary py-32 px-4 rounded-t-[3rem]">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold text-brand-navy">Selected work..</h2>
+        <h2 className="text-4xl font-bold text-foreground">Selected work..</h2>
         <div>
           {PROJECTS.map((project, i) => (
             <ProjectCard
@@ -30,7 +30,7 @@ export function SelectedWork() {
         <div className="text-center">
           <Link
             href="/showcase"
-            className="text-brand-navy font-semibold hover:text-brand-orange transition-colors inline-flex items-center gap-2"
+            className="text-foreground font-semibold hover:text-primary transition-colors inline-flex items-center gap-2"
           >
             See more work <span className="text-lg">●</span>
           </Link>

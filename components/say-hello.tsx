@@ -14,7 +14,7 @@ import Link from "next/link";
  */
 export function SayHello() {
   return (
-    <section className="bg-brand-pink py-32 px-4">
+    <section className="bg-background py-32 px-4">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -27,14 +27,14 @@ export function SayHello() {
           alt="Maroof Shittu"
           width={96}
           height={96}
-          className="rounded-full border-4 border-brand-orange object-cover w-24 h-24 mx-auto mb-8"
+          className="rounded-full border-4 border-primary object-cover w-24 h-24 mx-auto mb-8"
         />
-        <h2 className="text-5xl md:text-6xl font-bold tracking-tight text-brand-navy mb-6">
+        <h2 className="text-5xl md:text-6xl font-bold tracking-tight text-foreground mb-6">
           Say Hello.
         </h2>
         <Link
           href="/contact"
-          className="text-brand-navy font-semibold hover:text-brand-orange transition-colors inline-flex items-center gap-2"
+          className="text-foreground font-semibold hover:text-primary transition-colors inline-flex items-center gap-2"
         >
           hi@maroofshittu.com <span className="text-lg">↗</span>
         </Link>

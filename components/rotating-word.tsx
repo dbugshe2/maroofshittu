@@ -33,7 +33,7 @@ export function RotatingWord({ words, interval = 2400 }: RotatingWordProps) {
   }, [words.length, interval]);
 
   return (
-    <span className="relative inline-block overflow-hidden align-bottom text-brand-orange">
+    <span className="relative inline-block overflow-hidden align-bottom text-primary">
       <AnimatePresence mode="wait">
         <motion.span
           key={words[index]}
