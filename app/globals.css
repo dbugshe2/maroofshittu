@@ -37,6 +37,12 @@
   --sidebar-border: oklch(0 0 0);
   --sidebar-ring: oklch(0.41 0.07 129.47);
 
+  /* Brand accents */
+  --brand-pink: #ffe8e7;
+  --brand-blue: #d6f0ff;
+  --brand-orange: #fe5621;
+  --brand-navy: #181b2e;
+
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --font-serif: "Geist", "Geist Fallback", sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
@@ -137,6 +143,11 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-brand-pink: var(--brand-pink);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-navy: var(--brand-navy);
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
