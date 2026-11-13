@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { MobileMenu } from "@/components/mobile-menu";
 
 const navLinks = [
-  { href: "#", label: "Work" },
-  { href: "#", label: "About" },
+  { href: "/#work", label: "Work" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -39,6 +40,7 @@ export function Navbar() {
                 </Link>
               ))}
             </div>
+            <MobileMenu links={navLinks} />
           </div>
         </div>
       </nav>
