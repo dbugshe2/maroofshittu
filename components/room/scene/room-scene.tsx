@@ -1,0 +1,33 @@
+"use client";
+import { Canvas } from "@react-three/fiber";
+import { Suspense } from "react";
+import { ContactShadows, ScrollControls } from "@react-three/drei";
+import { useRoomStore } from "@/components/room/state/room-store";
+import { RoomShell } from "./room-shell";
+import { RoomModels } from "./room-models";
+import { Lighting } from "./lighting";
+import { CameraRig, ScrollBridge } from "./camera-rig";
+
+export default function RoomScene() {
+  const quality = useRoomStore((s) => s.quality);
+  return (
+    <Canvas
+      shadows={quality === "high"}
+      dpr={quality === "low" ? [1, 1.25] : [1, 2]}
+      camera={{ position: [0, 1.6, 5], fov: 55 }}
+      className="!fixed inset-0"
+    >
+      <color attach="background" args={["#1b1726"]} />
+      <Suspense fallback={null}>
+        <ScrollControls pages={5} damping={0.25}>
+          <Lighting quality={quality} />
+          <RoomShell />
+          <RoomModels />
+          <ContactShadows position={[0, 0.01, 0]} opacity={0.4} scale={12} blur={2} far={4} />
+          <CameraRig />
+          <ScrollBridge />
+        </ScrollControls>
+      </Suspense>
+    </Canvas>
+  );
+}
